@@ -1,35 +1,53 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
  import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
  import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Text,View,StyleSheet, Image} from 'react-native';
+import {Text,View,StyleSheet, Image, Platform} from 'react-native';
 import ComponentSlider from '../../../components/slider/ComponentSlider';
+import { CardList } from 'react-native-card-list';
 
 /* FUNCION DE NUESTRA PANTALLA DE POst */
 export default function ScreenPost(){
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+  fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
+  .then((response) => response.json())
+  .then((json) => setData(json.productos))
+  .then(console.log(setData))
+
+  .catch((error) => console.error(error))
+  .finally(() => setLoading(false));
+  }, []);
+
+  const cards = [
+    {
+      id: "0",
+      title: "Anillos",
+      picture: require('../../../assets/images/anillo1.jpg'),
+      content: <Text>Anillos de mujer</Text>
+    },
+    {
+      id: "1",
+      title: "Relojes",
+      picture: require('../../../assets/images/anillo1.jpg'),
+      content: <Text>Relojes de hombre</Text>
+    },
+    {
+      id: "2",
+      title: "Collar",
+      picture: require('../../../assets/images/anillo1.jpg'),
+      content: <Text>Collares de mujer</Text>
+    }
+  ]
+
   return(
       <>
      <View style={[styles.container, {
-        // Try setting `flexDirection` to `"row"`.
         flexDirection: "column"}]}>
-        {/* VISTA CATEGORI 1 */}
-        <ComponentSlider/>
-        <Text>Envios</Text>
-        <View style={{flex:1, justifyContent:"center", flexDirection:"row", alignItems:"center"}}>
-
-            <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo1.jpg')}/></View>
-            <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo2.jpg')}/></View>
-            <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo3.jpg')}/></View>
-           
+        <View style={styles.container1}>
+          <CardList cards={cards} />
         </View>
-        
-        <Text>Mis compras</Text>
-        <View style={{flex:1, justifyContent:"center", flexDirection:"row", alignItems:"center"}}>
-            <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo1.jpg')}/></View>
-            <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo2.jpg')}/></View>
-            <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo3.jpg')}/></View>
-            
-        </View>
- 
     </View>
     </>
   );
@@ -44,5 +62,10 @@ const styles = StyleSheet.create({
         width: 68,
         height: 68,
       },
-
+      container1:{
+        flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+      }
 })
