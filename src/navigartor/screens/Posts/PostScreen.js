@@ -1,6 +1,8 @@
 import * as React from 'react';
-
+ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+ import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Text,View,StyleSheet, Image} from 'react-native';
+import ComponentSlider from '../../../components/slider/ComponentSlider';
 
 /* FUNCION DE NUESTRA PANTALLA DE POst */
 export default function ScreenPost(){
@@ -10,8 +12,8 @@ export default function ScreenPost(){
         // Try setting `flexDirection` to `"row"`.
         flexDirection: "column"}]}>
         {/* VISTA CATEGORI 1 */}
-        <Text>Laravel > Ver Más</Text>
-
+        <ComponentSlider/>
+        <Text>Envios</Text>
         <View style={{flex:1, justifyContent:"center", flexDirection:"row", alignItems:"center"}}>
 
             <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo1.jpg')}/></View>
@@ -19,15 +21,8 @@ export default function ScreenPost(){
             <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo3.jpg')}/></View>
            
         </View>
-        <Text>GIT > Ver Más</Text>
-
-        <View style={{flex:1, justifyContent:"center", flexDirection:"row", alignItems:"center"}}>
-        <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo1.jpg')}/></View>
-        <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo2.jpg')}/></View>
-        <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo3.jpg')}/></View>
-
-        </View>
-        <Text>Aplicaciones  > Ver Más</Text>
+        
+        <Text>Mis compras</Text>
         <View style={{flex:1, justifyContent:"center", flexDirection:"row", alignItems:"center"}}>
             <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo1.jpg')}/></View>
             <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}><Image style={styles.imageCategory}  source={require('../../../assets/images/anillo2.jpg')}/></View>

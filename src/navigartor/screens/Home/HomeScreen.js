@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Text, View, StyleSheet, Image, ImageBackground} from 'react-native';
-import ComponentSlider from '../../../components/slider/ComponentSlider'
+import ComponentSlider from '../../../components/slider/ComponentSlider';
+import CategoryScreen from '../../../navigartor/screens/Categories/CategoryScreen';
 //-------------------------------------------------------------------------------------
  /* Declaración De Nuestro función Home Screenjs */
  const image = { uri: "https://static3.abc.es/media/summum/2018/10/31/Diamantes-k7bB--1200x630@abc.jpg" };
@@ -38,6 +39,7 @@ export default function HomeScreen(){
     </ImageBackground>
   </View>
 
+  <CategoryScreen/>
       </View>  
         </>
     )
@@ -47,7 +49,7 @@ export default function HomeScreen(){
  const styles = StyleSheet.create({
      container1: {
      flex: 1,
-     padding: 20,
+     padding: 1,
      },
      imageCategory: {
         width: 90,

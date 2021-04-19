@@ -1,29 +1,33 @@
-import * as React from 'react';
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import {Text, StyleSheet,View, Image, FlatList} from 'react-native';
+import {Text, ActivityIndicator, StyleSheet,View, Image, FlatList} from 'react-native';
 
 export default function CategoryScreen(){
-  const [images, setimages] = useState([
-    require('../../../assets/images/collar.jpg'),
-    require('../../../assets/images/collar1.jpg'),
-    require('../../../assets/images/collar111.jpg'),
-    require('../../../assets/images/reloj2.jpg'),
-    require('../../../assets/images/relog11.jpg'),
-    require('../../../assets/images/reloj3.jpg'),
-    require('../../../assets/images/collar.jpg'),
-    require('../../../assets/images/collar.jpg'),
-    require('../../../assets/images/collar.jpg')
-  ]);
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+  fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
+  .then((response) => response.json())
+  .then((json) => setData(json.productos))
+  .then(console.log(setData))
+
+  .catch((error) => console.error(error))
+  .finally(() => setLoading(false));
+  }, []);
+
      return (
+       <View style={styles.container}>
+         {isLoading ? <ActivityIndicator/> :(
     <FlatList
-    data={images}
-    key={"2"}
-    numColumns={2}
-    renderItem={({ item }) => (
-      <View style={styles.container}>
-        <Image
-          source={item}
+          data={data}
+          key={"2"}
+          numColumns={2}
+          keyExtractor={({ id }, index) => id}
+          renderItem={({ item }) => (
+      <Text>{item.name}, {item.description}</Text>,
+      <Image
+          source={{uri:item.photo}}
           style={{
             width: 170,
             height: 200,
@@ -33,11 +37,12 @@ export default function CategoryScreen(){
             margin: 5,
           }}
           keyExtractor={(item) => item.id}
-        />
+      />
         
-      </View>
-    )}
-  />
+                )}
+    />
+         )}
+  </View>
   );
 }
 
