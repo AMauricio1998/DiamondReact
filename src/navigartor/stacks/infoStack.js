@@ -14,7 +14,7 @@ export const infoStack = () =>{
 
     return(
         <Stack.Navigator >
-            <Stack.Screen name="Info" component={infoScreen} />
+            <Stack.Screen name="Personas registradas" component={infoScreen} />
         </Stack.Navigator>
     );
 }

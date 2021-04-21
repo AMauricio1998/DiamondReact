@@ -10,6 +10,7 @@ export default function HomeScreen(){
 
     return(
         <>
+        
      <View style={[styles.container1, {
       // Try setting `flexDirection` to `"row"`.
       flexDirection: "column"}]}>
@@ -75,5 +76,13 @@ export default function HomeScreen(){
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#000000a0"
+  },
+  backgroundImage: {
+    flex: 1,
+    // width: undefined,
+    // height: undefined,
+    // flexDirection: 'column',
+    // backgroundColor:'transparent',
+    // justifyContent: 'flex-start',
   }
      });

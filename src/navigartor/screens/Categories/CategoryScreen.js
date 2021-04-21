@@ -1,81 +1,99 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from "expo-status-bar";
-import {Text, ActivityIndicator, StyleSheet,View, Image, FlatList, TouchableOpacity } from 'react-native';
-import ComponentSlider from '../../../components/slider/ComponentSlider';
+import React, { PureComponent, Component } from "react";
+import {Image, Text, StyleSheet, View ,TouchableOpacity, FlatList, ActivityIndicator, ImageBackground} from "react-native";
+ 
+export default class CategoryScreen extends PureComponent{
 
-export default function CategoryScreen(){
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-  fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
-  .then((response) => response.json())
-  .then((json) => setData(json.productos))
-  .then(console.log(setData))
+    this.state = {
+      data: [],
+      isLoading: true
+    };
+  }
 
-  .catch((error) => console.error(error))
-  .finally(() => setLoading(false));
-  }, []);
+  componentDidMount() {
+    fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ data: json.productos });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
 
-     return (
 
-       <View style={styles.container}>
-               
-         {isLoading ? <ActivityIndicator/> :(
-    <FlatList
-          data={data}
-          key={"2"}
-          numColumns={2}
-          keyExtractor={({ id }, index) => id}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.card}>
-      <Image
-          source={{uri:item.photo}}
-          style={{
-            width: 170,
-            height: 100,
-            borderWidth: 2,
-            borderColor: "#212F3C",
-            resizeMode: "contain",
-            margin: 5,
-            marginBottom: 10,
-          }}
-          keyExtractor={(item) => item.id}
-      />
-      <Text style={styles.cardText}>Precio : {item.price}</Text>
-      </TouchableOpacity>
-        
+
+    render() {
+      const { data, isLoading } = this.state;
+          return(
+            <ImageBackground source={require('../../../assets/images/diamond1.jpg')} style={styles.backgroundImage} >
+            <View style={styles.container}>
+              {isLoading ? <ActivityIndicator/> : (
+              <FlatList
+              data={data}
+              keyExtractor={({ id }, index) => id}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.card}>
+                    <Image style={styles.cardImage} source={{uri: item.photo}}/>
+                    <Text style={styles.cardText}>Nombre: {item.name}</Text>
+                    <Text style={styles.cardText}>Descripcion : {item.description}</Text>
+                    <Text style={styles.cardText}>Precio : {item.price}</Text>
+                </TouchableOpacity>
                 )}
-    />
-         )}
-  </View>
-  );
+              />
+            )}
+            </View>
+            </ImageBackground>
+        )
+    }
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-    flex: 1,
-    padding: 1,
-    },
-    cardText:{
+  container: {
+    marginTop: 20,
+  },
+  cardText:{
       fontSize:16,
       padding: 10,
       fontFamily: 'serif',
   },
   card:{
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    marginLeft: '0%',
-    width: '50%',
-    borderRadius: 9,
-    borderWidth: 0.5,
-    borderColor:'#000',
-    shadowColor: '#000',
-    shadowOpacity: 1,
-    shadowOffset: {
-        width: 3,
-        height: 3
-    }
-},
-    });
+      backgroundColor: '#fff',
+      marginBottom: 10,
+      marginLeft: '2%',
+      width: '96%',
+      borderRadius: 9,
+      borderWidth: 0.5,
+      borderColor:'#000',
+      shadowColor: '#000',
+      shadowOpacity: 1,
+      shadowOffset: {
+          width: 3,
+          height: 3
+      }
+  },
+  cardImage: {
+      borderRadius: 9,
+      borderWidth: 0.5,
+      borderColor:'#000',
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    // width: undefined,
+    // height: undefined,
+    // flexDirection: 'column',
+    // backgroundColor:'transparent',
+    // justifyContent: 'flex-start',
+}
+})

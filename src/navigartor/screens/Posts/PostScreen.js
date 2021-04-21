@@ -1,5 +1,5 @@
 import React, { PureComponent, Component } from "react";
-import {Image, Text, StyleSheet, View ,TouchableOpacity, FlatList, ActivityIndicator} from "react-native";
+import {Image, Text, StyleSheet, View ,TouchableOpacity, FlatList, ActivityIndicator, ImageBackground} from "react-native";
  
 export default class ComprasCard extends PureComponent{
 
@@ -13,10 +13,10 @@ export default class ComprasCard extends PureComponent{
   }
 
   componentDidMount() {
-    fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
+    fetch('https://cdvlgeda.lucusvirtual.es/api/envios')
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ data: json.productos });
+        this.setState({ data: json.envio });
       })
       .catch((error) => console.error(error))
       .finally(() => {
@@ -29,6 +29,7 @@ export default class ComprasCard extends PureComponent{
     render() {
       const { data, isLoading } = this.state;
           return(
+            <ImageBackground source={require('../../../assets/images/diamond1.jpg')} style={styles.backgroundImage} >
             <View style={styles.container}>
               {isLoading ? <ActivityIndicator/> : (
               <FlatList
@@ -36,22 +37,24 @@ export default class ComprasCard extends PureComponent{
               keyExtractor={({ id }, index) => id}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.card}>
-                    <Image style={styles.cardImage} source={{uri: item.photo}}/>
-                    <Text style={styles.cardText}>Nombre: {item.name}</Text>
-                    <Text style={styles.cardText}>Descripcion : {item.description}</Text>
-                    <Text style={styles.cardText}>Precio : {item.price}</Text>
+                    <Image style={styles.cardImage} source={{uri: 'https://media.istockphoto.com/vectors/order-delivery-status-post-parcel-package-tracking-vector-icons-order-vector-id1205607205'}}/>
+                    <Text style={styles.cardText}>id de la venta: {item.id_envio}</Text>
+                    <Text style={styles.cardText}>Calle : {item.calle}</Text>
+                    <Text style={styles.cardText}>Fecha de entrega : {item.fecha}</Text>
+                    <Text style={styles.cardText}>Codigo postal : {item.codigo_postal}</Text>
                 </TouchableOpacity>
                 )}
               />
             )}
             </View>
+            </ImageBackground>
         )
     }
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
+    marginTop: 20,
   },
   cardText:{
       fontSize:16,
@@ -85,5 +88,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  backgroundImage: {
+    flex: 1,
+    // width: undefined,
+    // height: undefined,
+    // flexDirection: 'column',
+    // backgroundColor:'transparent',
+    // justifyContent: 'flex-start',
+}
 })

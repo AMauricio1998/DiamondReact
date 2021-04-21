@@ -1,47 +1,90 @@
-import * as React from 'react';
-import {Text, View,StyleSheet,Image, ImageBackground} from 'react-native';
+import React, { PureComponent, Component } from "react";
+import {Image, Text, StyleSheet, View ,TouchableOpacity, FlatList, ActivityIndicator, ImageBackground} from "react-native";
+ 
+export default class infoScreen extends PureComponent{
 
-export default function infoScreen(){
+  constructor(props) {
+    super(props);
 
-    return(
-        <>
-        <ImageBackground source={require('../../../assets/images/diamond1.jpg')} style={styles.backgroundImage} >
-        
-     <View style={[styles.container, {
-      // Try setting `flexDirection` to `"row"`.
-      flexDirection: "column"}]}>
-        {/* <Text>Informacion</Text> */}
-      
-      <View style={{flex:1, backgroundColor:"#0000", justifyContent:"center", flexDirection:"row", alignItems:"center"}}>
-        <View style={{flex:1,flexDirection:"row",justifyContent:"center"}}>
-            <Image style={styles.imageInfo} source={require('../../../assets/images/diamond.png')}/>
-        </View>
-      </View>
-           
-    </View>
-            <Text style={styles.Text}>Por favor comunicarte al siguiente correo:</Text>
-            <Text style={styles.Text}>al221910354@gmail.com</Text>
-            <Text style={styles.Text}>version 1.5</Text>  
-    </ImageBackground>
-        </>
-    )
+    this.state = {
+      data: [],
+      isLoading: true
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://cdvlgeda.lucusvirtual.es/api/usuarios')
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ data: json.usuarios });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
+
+
+
+    render() {
+      const { data, isLoading } = this.state;
+          return(
+            <ImageBackground source={require('../../../assets/images/diamond1.jpg')} style={styles.backgroundImage} >
+            <View style={styles.container}>
+              {isLoading ? <ActivityIndicator/> : (
+              <FlatList
+              data={data}
+              keyExtractor={({ id }, index) => id}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.card}>
+                    <Image style={styles.cardImage} source={{uri: 'https://live.mrf.io/statics/i/ps/www.movilzona.es/app/uploads/2019/05/Foto-de-Perfil-en-WhatsApp-696x364.jpg?width=1200&enable=upscale'}}/>
+                    <Text style={styles.cardText}>Nombre: {item.nombre} {item.app} {item.app}</Text>
+                    <Text style={styles.cardText}>Tipo de usuario: {item.tipo} </Text>
+                    <Text style={styles.cardText}>Contacto : {item.tel}</Text>
+                    <Text style={styles.cardText}>Email : {item.email}</Text>
+                </TouchableOpacity>
+                )}
+              />
+            )}
+            </View>
+            </ImageBackground>
+        )
+    }
 }
 
-
 const styles = StyleSheet.create({
-    Text:{
-        textAlign: 'center',
-        backgroundColor: "#ffff",
-    },
-    container: {
-    flex: 1,
-    padding: 80,
-    },
-    imageInfo: {
-        width: 100,
-        height: 100,
-      },
-      backgroundImage: {
+  container: {
+    marginTop: 20,
+  },
+  cardText:{
+      fontSize:16,
+      padding: 10,
+      fontFamily: 'serif',
+  },
+  card:{
+      backgroundColor: '#fff',
+      marginBottom: 10,
+      marginLeft: '2%',
+      width: '96%',
+      borderRadius: 9,
+      borderWidth: 0.5,
+      borderColor:'#000',
+      shadowColor: '#000',
+      shadowOpacity: 1,
+      shadowOffset: {
+          width: 3,
+          height: 3,
+      }
+  },
+  cardImage: {
+      borderRadius: 9,
+      borderWidth: 0.5,
+      borderColor:'#000',
+    width: '100%',
+    height: 450,
+    resizeMode: 'cover',
+  },
+  backgroundImage: {
     flex: 1,
     // width: undefined,
     // height: undefined,
@@ -49,4 +92,4 @@ const styles = StyleSheet.create({
     // backgroundColor:'transparent',
     // justifyContent: 'flex-start',
 }
-    });
+})
