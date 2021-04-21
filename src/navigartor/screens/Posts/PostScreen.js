@@ -1,71 +1,89 @@
-import React, { useEffect, useState } from 'react';
- import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
- import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Text,View,StyleSheet, Image, Platform} from 'react-native';
-import ComponentSlider from '../../../components/slider/ComponentSlider';
-import { CardList } from 'react-native-card-list';
+import React, { PureComponent, Component } from "react";
+import {Image, Text, StyleSheet, View ,TouchableOpacity, FlatList, ActivityIndicator} from "react-native";
+ 
+export default class ComprasCard extends PureComponent{
 
-/* FUNCION DE NUESTRA PANTALLA DE POst */
-export default function ScreenPost(){
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-  fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
-  .then((response) => response.json())
-  .then((json) => setData(json.productos))
-  .then(console.log(setData))
+    this.state = {
+      data: [],
+      isLoading: true
+    };
+  }
 
-  .catch((error) => console.error(error))
-  .finally(() => setLoading(false));
-  }, []);
+  componentDidMount() {
+    fetch('https://cdvlgeda.lucusvirtual.es/api/categories')
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ data: json.productos });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
 
-  const cards = [
-    {
-      id: "0",
-      title: "Anillos",
-      picture: require('../../../assets/images/anillo1.jpg'),
-      content: <Text>Anillos de mujer</Text>
-    },
-    {
-      id: "1",
-      title: "Relojes",
-      picture: require('../../../assets/images/anillo1.jpg'),
-      content: <Text>Relojes de hombre</Text>
-    },
-    {
-      id: "2",
-      title: "Collar",
-      picture: require('../../../assets/images/anillo1.jpg'),
-      content: <Text>Collares de mujer</Text>
+
+
+    render() {
+      const { data, isLoading } = this.state;
+          return(
+            <View style={styles.container}>
+              {isLoading ? <ActivityIndicator/> : (
+              <FlatList
+              data={data}
+              keyExtractor={({ id }, index) => id}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.card}>
+                    <Image style={styles.cardImage} source={{uri: item.photo}}/>
+                    <Text style={styles.cardText}>Nombre: {item.name}</Text>
+                    <Text style={styles.cardText}>Descripcion : {item.description}</Text>
+                    <Text style={styles.cardText}>Precio : {item.price}</Text>
+                </TouchableOpacity>
+                )}
+              />
+            )}
+            </View>
+        )
     }
-  ]
-
-  return(
-      <>
-     <View style={[styles.container, {
-        flexDirection: "column"}]}>
-        <View style={styles.container1}>
-          <CardList cards={cards} />
-        </View>
-    </View>
-    </>
-  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-    flex: 1,
-    padding: 20,
-    },
-    imageCategory: {
-        width: 68,
-        height: 68,
-      },
-      container1:{
-        flex: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+  container: {
+    marginTop: 40,
+  },
+  cardText:{
+      fontSize:16,
+      padding: 10,
+      fontFamily: 'serif',
+  },
+  card:{
+      backgroundColor: '#fff',
+      marginBottom: 10,
+      marginLeft: '2%',
+      width: '96%',
+      borderRadius: 9,
+      borderWidth: 0.5,
+      borderColor:'#000',
+      shadowColor: '#000',
+      shadowOpacity: 1,
+      shadowOffset: {
+          width: 3,
+          height: 3
       }
+  },
+  cardImage: {
+      borderRadius: 9,
+      borderWidth: 0.5,
+      borderColor:'#000',
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })

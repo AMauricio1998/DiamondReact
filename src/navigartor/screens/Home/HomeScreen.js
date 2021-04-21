@@ -38,9 +38,14 @@ export default function HomeScreen(){
       <Text style={styles.text}>DIAMOND</Text>
     </ImageBackground>
   </View>
+  
+      <View style={styles.container}>
+          <CategoryScreen/>
+      </View>
 
-  <CategoryScreen/>
       </View>  
+
+      
         </>
     )
 }

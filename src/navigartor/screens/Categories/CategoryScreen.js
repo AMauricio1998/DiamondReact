@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from "expo-status-bar";
-import {Text, ActivityIndicator, StyleSheet,View, Image, FlatList} from 'react-native';
+import {Text, ActivityIndicator, StyleSheet,View, Image, FlatList, TouchableOpacity } from 'react-native';
+import ComponentSlider from '../../../components/slider/ComponentSlider';
 
 export default function CategoryScreen(){
   const [isLoading, setLoading] = useState(true);
@@ -17,7 +18,9 @@ export default function CategoryScreen(){
   }, []);
 
      return (
+
        <View style={styles.container}>
+               
          {isLoading ? <ActivityIndicator/> :(
     <FlatList
           data={data}
@@ -25,19 +28,22 @@ export default function CategoryScreen(){
           numColumns={2}
           keyExtractor={({ id }, index) => id}
           renderItem={({ item }) => (
-      <Text>{item.name}, {item.description}</Text>,
+            <TouchableOpacity style={styles.card}>
       <Image
           source={{uri:item.photo}}
           style={{
             width: 170,
-            height: 200,
+            height: 100,
             borderWidth: 2,
             borderColor: "#212F3C",
             resizeMode: "contain",
             margin: 5,
+            marginBottom: 10,
           }}
           keyExtractor={(item) => item.id}
       />
+      <Text style={styles.cardText}>Precio : {item.price}</Text>
+      </TouchableOpacity>
         
                 )}
     />
@@ -52,4 +58,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 1,
     },
+    cardText:{
+      fontSize:16,
+      padding: 10,
+      fontFamily: 'serif',
+  },
+  card:{
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    marginLeft: '0%',
+    width: '50%',
+    borderRadius: 9,
+    borderWidth: 0.5,
+    borderColor:'#000',
+    shadowColor: '#000',
+    shadowOpacity: 1,
+    shadowOffset: {
+        width: 3,
+        height: 3
+    }
+},
     });

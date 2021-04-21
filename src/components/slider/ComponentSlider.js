@@ -17,7 +17,7 @@ export default function ComponentSlider(){
     }, []);
 
     return (
-        <View style={{flex: 0.8, padding: 0}}>
+        <View style={{flex: 1, padding: 0}}>
         {isLoading ? <ActivityIndicator/> : (
             <FlatListSlider
             data={data}
@@ -38,7 +38,7 @@ export default function ComponentSlider(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        padding: 25,
     },
     imageCategory:{
         width: 90,
